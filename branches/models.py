@@ -13,3 +13,6 @@ class Branch(models.Model):
         default=list
     ) 
     
+
+    def __str__(self):
+        return self.name
