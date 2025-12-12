@@ -7,7 +7,8 @@ class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = ['id','username','email', 'phone_number', 'is_staff', 'password', 'confirm_password']
+        # fields = ['id','username','email', 'phone_number', 'is_staff', 'password', 'confirm_password']
+        fields = ['id','username','email', 'is_staff', 'password', 'confirm_password']
 
     def validate(self, data):
         print(data)        
@@ -17,15 +18,15 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'confirm_password': 'Passwords do not match.'})
         password_validation.validate_password(password)
 
-        self.validate_phone_number(data['phone_number'])
+        # self.validate_phone_number(data['phone_number'])
         data['password'] = hashers.make_password(password=password)
         return data
     
 
-    def validate_phone_number(self,phone_number):
-        try:
-            x = phonenumbers.parse(phone_number, None)
-        except phonenumbers.NumberParseException:
-            raise serializers.ValidationError({'phone_number': 'Invalid phone number format'})
-        if not phonenumbers.is_valid_number(x):
-             raise serializers.ValidationError({'phone_number': 'Invalid phone number'})
+    # def validate_phone_number(self,phone_number):
+    #     try:
+    #         x = phonenumbers.parse(phone_number, None)
+    #     except phonenumbers.NumberParseException:
+    #         raise serializers.ValidationError({'phone_number': 'Invalid phone number format'})
+    #     if not phonenumbers.is_valid_number(x):
+    #          raise serializers.ValidationError({'phone_number': 'Invalid phone number'})

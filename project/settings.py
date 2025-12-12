@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=%^^zk1cr&4kc)8x*s_gzos)ciq**smu1k%7u%+r!fkr&vt^m6'
+# SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'reservations',
     'rooms',
     'users',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,11 @@ TEMPLATES = [
         },
     },
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
@@ -79,9 +85,16 @@ AUTH_USER_MODEL = 'users.User'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 import environ
+from datetime import timedelta
 
 env = environ.Env()
 environ.Env.read_env()
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME':  timedelta(days=30)
+}
+
+SECRET_KEY = env('SECRET_KEY')
 
 DATABASES = {
     'default': {

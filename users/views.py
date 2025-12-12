@@ -12,7 +12,7 @@ class SignUpView(generics.CreateAPIView):
     #     print(request.data)
     #     return super().create(request, *args, **kwargs)
     
-
+    
 # class SignUpView(APIView):
 #   def post(self, request):
 #     serializer = UserSerializer(data=request.data)
