@@ -89,7 +89,9 @@ DATABASES = {
         'NAME': env('PGDATABASE'),
         'USER': env('PGUSER'),
         'PASSWORD': env('PGPASSWORD'),
-        'HOST': env('PGHOST')
+        'HOST': env('PGHOST'),
+        'PGSSLMODE':'require',
+        'PGCHANNELBINDING':'require'
     }
 }
 
