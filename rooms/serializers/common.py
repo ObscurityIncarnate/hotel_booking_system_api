@@ -6,3 +6,4 @@ class RoomSerializer(ModelSerializer):
     class Meta:
         model = Room
         fields = '__all__'
+        read_only_fields = ["branchId"]        

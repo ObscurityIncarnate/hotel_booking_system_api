@@ -13,6 +13,6 @@ class IsStaff(BasePermission):
     
 class IsStaffOrReadOnly(BasePermission):
     def has_permission(self, request, view):
-        if request in SAFE_METHODS:
+        if request.method in SAFE_METHODS:
             return True
         return bool(request.user and request.user.is_staff)  
