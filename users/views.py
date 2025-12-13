@@ -1,8 +1,9 @@
 from .models import User
 from .serializers.common import UserSerializer
 from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from .serializers.tokens import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 # Create your views here.
 class SignUpView(generics.CreateAPIView):
 
@@ -19,3 +20,6 @@ class SignUpView(generics.CreateAPIView):
 #     serializer.is_valid(raise_exception=True)
 #     serializer.save()
 #     return Response({ "message": 'Sign up successful' })
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

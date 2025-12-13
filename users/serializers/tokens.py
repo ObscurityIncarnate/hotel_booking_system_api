@@ -1,5 +1,4 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -10,8 +9,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['user'] = {
 	        'id': user.id,
 	        'username': user.username,
-		    'is_staff' : user.is_staff 
+		    'is_staff': user.is_staff 
         }
-        # ...
 
         return token
