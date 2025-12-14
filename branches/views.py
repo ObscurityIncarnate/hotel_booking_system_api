@@ -3,7 +3,7 @@ from rooms.serializers.common import RoomSerializer
 from rooms.models import Room
 from .models import Branch
 from rest_framework import generics
-from utils.permissions import IsOwner, IsStaffOrReadOnly
+from utils.permissions import IsStaffOrReadOnly
 from django.shortcuts import get_object_or_404
 # Create your views here.
 class BranchView(generics.ListCreateAPIView):
@@ -19,7 +19,6 @@ class BranchDetailRoomView(generics.ListCreateAPIView):
     permission_classes =[IsStaffOrReadOnly]
     serializer_class = RoomSerializer
     def get_queryset(self):
-        print(self.kwargs)
         branch_id = self.kwargs['branch_id']
         return Room.objects.filter(branchId=branch_id)
     def perform_create(self, serializer):
