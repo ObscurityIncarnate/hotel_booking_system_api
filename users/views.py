@@ -48,4 +48,12 @@ class userDetailReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user = self.kwargs['user_id']
         return Reservation.objects.filter(reserved_by = user)
+    #when updating the reservation you can only update start date and end date, and indirectly the price should be recalculated, anything else will require a delete of the reservation and just recreated
+    def perform_update(self, serializer):
+        end_date = datetime.strptime(  self.request.data.get('end_date'), '%Y-%m-%d').date()
+        start_date = datetime.strptime(  self.request.data.get('start_date'), '%Y-%m-%d').date()
+        reservation = Reservation.objects.get(pk=self.kwargs['pk'])
+        room = get_object_or_404(Room, pk=reservation.reserved_room.id)
+        total_cost = end_date - start_date
+        serializer.save(cost = total_cost.days * room.price_per_night )         
 
