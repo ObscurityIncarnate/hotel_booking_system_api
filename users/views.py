@@ -47,7 +47,7 @@ class userDetailReservationCreateView(generics.CreateAPIView):
         room = get_object_or_404(Room, pk=self.kwargs['room_id'])
         total_cost = end_date - start_date
         serializer.save(reserved_by = user, reserved_room = room, cost = total_cost.days * room.price_per_night )  
-        result = send_reservation_change(operation="modified", username=user.username, to=user.email) 
+        result = send_reservation_create(operation="modified", username=user.username, to=user.email) 
         print(result.status_code)
         print(result.json())
 
