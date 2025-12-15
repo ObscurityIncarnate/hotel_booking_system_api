@@ -5,7 +5,7 @@ from utils.permissions import IsStaff
 # Create your views here.
 
 
-class reservationView (generics.ListCreateAPIView):
+class reservationView (generics.ListAPIView):
     permission_classes = [IsStaff]
     queryset =Reservation.objects.all()
     serializer_class = ReservationSerializer

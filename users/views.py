@@ -1,6 +1,7 @@
 from .models import User
 from .serializers.common import UserSerializer
 from rest_framework import generics
+from rest_framework import serializers
 from .serializers.tokens import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from utils.permissions import IsStaff,IsOwnerOrStaff
@@ -20,7 +21,7 @@ class SignUpView(generics.CreateAPIView):
         username = self.request.data.get("username")
         email = self.request.data.get("email")
         serializer.save()
-        account_signup(username=username,  to=email, email_body="You successfully created your account! ")
+        account_signup(username=username,  to=email)
         # return super().perform_create(serializer)
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -41,15 +42,17 @@ class userDetailReservationCreateView(generics.CreateAPIView):
     serializer_class = ReservationSerializer     
     def perform_create(self, serializer):
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
-        #we need to know what room to match it to and then also have the user and then also calculating the price
-        end_date = datetime.strptime(  self.request.data.get('end_date'), '%Y-%m-%d').date()
-        start_date = datetime.strptime(  self.request.data.get('start_date'), '%Y-%m-%d').date()
         room = get_object_or_404(Room, pk=self.kwargs['room_id'])
+
+        end_date = datetime.strptime(  self.request.data.get('end_date'), '%Y-%m-%d').date()
+        start_date = datetime.strptime(  self.request.data.get('start_date'), '%Y-%m-%d').date() 
+
         total_cost = end_date - start_date
-        serializer.save(reserved_by = user, reserved_room = room, cost = total_cost.days * room.price_per_night )  
-        result = send_reservation_create(operation="modified", username=user.username, to=user.email) 
-        print(result.status_code)
-        print(result.json())
+        serializer.save(reserved_by = user, reserved_room = room, cost = total_cost.days * room.price_per_night ) 
+        email_body = "" 
+        result = send_reservation_create(operation="modified", username=user.username, to=user.email, email_body=email_body) 
+        # print(result.status_code)
+        # print(result.json())
 
 class userDetailReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrStaff]
@@ -67,7 +70,8 @@ class userDetailReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
         room = get_object_or_404(Room, pk=reservation.reserved_room.id)
         total_cost = end_date - start_date
         serializer.save(cost = total_cost.days * room.price_per_night )  
-        result = send_reservation_change(operation="modified", username=user.username, to="parasocialpentagon@gmail.com") 
+        email_body = ""
+        result = send_reservation_change(operation="modified", username=user.username, to=user.email, email_body=email_body) 
         print(result.status_code)
         print(result.json())
 
@@ -75,6 +79,7 @@ class userDetailReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
         user_email = instance.reserved_by
         username = instance.reserved_by.username
         instance.delete()
-        result = send_reservation_delete(operation="deleted", username=username, to="parasocialpentagon@gmail.com") 
+        email_body = ""
+        result = send_reservation_delete(operation="deleted", username=username, to=user_email, email_body=email_body) 
         print(result.status_code)
         print(result.json())

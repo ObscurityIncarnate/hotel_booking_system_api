@@ -55,8 +55,8 @@ def account_signup(**kwargs):
         "FromEmail": "obscurityincarnate@gmail.com",
         "FromName": "Hoftan Apartments",
         "Subject": f"Your acount has been created!",
-        "Text-part": f"Dear {kwargs.get("username")},{kwargs.get("email_body")} Best regards, The team.",
-        "Html-part": f'<h3>Dear {kwargs.get("username")},<br />{kwargs.get("email_body")} <br /><br />Best regards, <br/> The team.',
+        "Text-part": f"Dear {kwargs.get("username")},You successfully created your account!\n Best regards, The team.",
+        "Html-part": f'<h3>Dear {kwargs.get("username")},<br />You successfully created your account!<br /><br />Best regards, <br/> The team.',
         # "Recipients": [{"Email": user.email}],
         "Recipients": [{"Email": kwargs.get("to")}],        
     }
