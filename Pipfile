@@ -12,6 +12,7 @@ djangorestframework = "*"
 phonenumbers = "*"
 djangorestframework-simplejwt = "*"
 mailjet-rest = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
