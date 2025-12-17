@@ -1,5 +1,7 @@
 from .serializers.common import BranchSerializer 
 from rooms.serializers.common import RoomSerializer
+from reservations.serializers.common import ReservationSerializer
+from reservations.models import Reservation
 from rooms.models import Room
 from .models import Branch
 from rest_framework import generics
@@ -36,3 +38,8 @@ class BranchDetailRoomDetailView(generics.RetrieveUpdateDestroyAPIView):
     #     branch =get_object_or_404(Branch, pk=self.kwargs['branch_id'] )
     #     # serializer.save(room.branchId = branch  )
     #     print(room)
+class BranchDetailRoomDetailReservationView(generics.ListAPIView):
+    serializer_class=  ReservationSerializer
+    def get_queryset(self):
+        room_id =  self.kwargs['pk']
+        return Reservation.objects.filter(reserved_room=room_id)
