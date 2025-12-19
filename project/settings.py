@@ -136,8 +136,10 @@ DATABASES = {
         'USER': env('PGUSER'),
         'PASSWORD': env('PGPASSWORD'),
         'HOST': env('PGHOST'),
-        'PGSSLMODE':'require',
-        'PGCHANNELBINDING':'require'
+        'PORT': 5432,
+        'OPTIONS': {
+        'sslmode': 'require',
+        }
     }
 }
 
