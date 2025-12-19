@@ -10,6 +10,7 @@ from reservations.serializers.common import ReservationSerializer
 from django.shortcuts import get_object_or_404
 from rooms.models import Room
 from datetime import datetime
+from decimal import Decimal
 from services.mailjet import mailjet, send_reservation_change, send_reservation_create, send_reservation_delete, account_signup
 # Create your views here.
 class SignUpView(generics.CreateAPIView):
@@ -48,7 +49,7 @@ class userDetailReservationCreateView(generics.CreateAPIView):
         start_date = datetime.strptime(  self.request.data.get('start_date'), '%Y-%m-%d').date() 
 
         total_cost = end_date - start_date
-        serializer.save(reserved_by = user, reserved_room = room, cost = total_cost.days * room.price_per_night ) 
+        serializer.save(reserved_by = user, reserved_room = room, cost = total_cost.days * room.price_per_night* Decimal("1.2") ) 
         email_body = "" 
         result = send_reservation_create(operation="modified", username=user.username, to=user.email, email_body=email_body) 
         # print(result.status_code)
@@ -76,7 +77,9 @@ class userDetailReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
         print(result.json())
 
     def perform_destroy(self, instance):
-        user_email = instance.reserved_by
+        
+        user_email = instance.reserved_by.email
+        print(user_email)
         username = instance.reserved_by.username
         instance.delete()
         email_body = ""
