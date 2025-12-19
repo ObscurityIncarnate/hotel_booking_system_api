@@ -13,6 +13,8 @@ phonenumbers = "*"
 djangorestframework-simplejwt = "*"
 mailjet-rest = "*"
 django-cors-headers = "*"
+whitenoise = "*"
+gunicorn = "*"
 
 [dev-packages]
 
