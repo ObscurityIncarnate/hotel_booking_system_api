@@ -138,7 +138,7 @@ DATABASES = {
         'HOST': env('PGHOST'),
         'PORT': 5432,
         'OPTIONS': {
-        'sslmode': 'require',
+            'sslmode': 'require',
         }
     }
 }
